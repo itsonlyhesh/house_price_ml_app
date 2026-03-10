@@ -17,6 +17,8 @@ def predict():
     features=np.array([[area,bedrooms,age]])
     prediction=model.predict(features)[0]
     return render_template("main.html",prediction_text=f"Estimated price:₹{prediction:,.0f}")
+import os
 if __name__=="__main__":
-    app.run(debug=True)
+    port=int(os.environ.get("PORT",5000))
+    app.run(host="0.0.0.0",port=port)
     
