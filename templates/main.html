@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>House Price Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page">
+        <section class="card">
+            <div class="card__header">
+                <span class="badge">AI/ML Project by HESHWANTH REDDY </span>
+                <h1>House Price Predictor</h1>
+                <p>
+                    Enter the property details below to estimate the house price.
+                </p>
+            </div>
+
+            <form action="/predict" method="post" class="form">
+                <div class="input-group">
+                    <label for="area">Area (sqft)</label>
+                    <input
+                        type="number"
+                        id="area"
+                        name="area"
+                        min="100"
+                        step="any"
+                        placeholder="e.g. 1500"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="bedrooms">Bedrooms</label>
+                    <input
+                        type="number"
+                        id="bedrooms"
+                        name="bedrooms"
+                        min="1"
+                        step="1"
+                        placeholder="e.g. 3"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="age">Age of House</label>
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        min="0"
+                        step="1"
+                        placeholder="e.g. 5"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn">Predict Price</button>
+            </form>
+
+            {% if prediction_text %}
+            <div class="result">
+                <h2>Prediction Result</h2>
+                <p>{{ prediction_text }}</p>
+            </div>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>
