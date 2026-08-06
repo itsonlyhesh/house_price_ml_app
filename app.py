@@ -5,22 +5,40 @@ import os
 
 app = Flask(__name__)
 
+# Load trained model
 model = joblib.load("model.pkl")
+
 
 @app.route("/")
 def home():
     return render_template("main.html")
 
+
 @app.route("/predict", methods=["POST"])
 def predict():
-    area = float(request.form["area"])
-    bedrooms = int(request.form["bedrooms"])
-    age = int(request.form["age"])
+    try:
+        area = float(request.form["area"])
+        bedrooms = int(request.form["bedrooms"])
+        age = int(request.form["age"])
 
-    features = np.array([[area, bedrooms, age]])
-    prediction = model.predict(features)[0]
+        features = np.array([[area, bedrooms, age]])
 
-    return render_template("main.html", prediction_text=f"Estimated price: ${prediction:,.0f}")
+        prediction = model.predict(features)[0]
+
+        # Display in Indian Rupees
+        formatted_price = f"₹ {prediction:,.2f}"
+
+        return render_template(
+            "main.html",
+            prediction_text=f"Estimated House Price: {formatted_price}"
+        )
+
+    except Exception as e:
+        return render_template(
+            "main.html",
+            prediction_text=f"Error: {str(e)}"
+        )
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
